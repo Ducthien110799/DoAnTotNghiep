@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.ChiTietSanPhamActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarchitietsanpham"
+        android:layout_width="match_parent"
+        app:title="Chi tiết sản phẩm"
+        android:background="@color/white"
+        app:titleTextColor="@color/black"
+        android:layout_height="?attr/actionBarSize"/>
+    <LinearLayout
+        android:background="@drawable/radius_coners"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:background="@drawable/abc_vector_test"
+            android:id="@+id/imageviewchitietsanpham"
+            android:layout_margin="10dp"
+            android:layout_width="150dp"
+            android:layout_height="180dp"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textviewtenchitietsanpham"
+                android:text="Ten san pham"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/textviewgiachitietsanpham"
+                android:text="Gia san pham"
+                android:textSize="16dp"
+                android:textColor="@color/black"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:background="@drawable/spinner"
+                    android:textAlignment="center"
+                    android:layout_margin="5dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerSize"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/spinner"
+                    android:textAlignment="center" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/buttonThem"
+                android:layout_margin="5dp"
+                android:textColor="@color/white"
+                android:background="#2196F3"
+                android:text="Thêm vào giỏ hàng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:text="Mô tả chi tiết sản phẩm"
+            android:background="@drawable/radius_coners"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:paddingBottom="10dp"
+            android:layout_height="wrap_content"/>
+        <ScrollView
+            android:background="@drawable/radius_coners"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:paddingBottom="10dp"
+                android:text="mo ta cho tiet san pham"
+                android:id="@+id/textviewmotachitietsanpham"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

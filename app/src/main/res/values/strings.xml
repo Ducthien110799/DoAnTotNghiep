@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">DoAnTotNghiep</string>
+    <string name="title_activity_infomation">Map</string>
+    <string name="gioithieu"><![CDATA[Giới thiệu TWestside\nThương hiệu thời trang nam TWestside được thành lập từ tháng 3 năm 2010,
+     là thương hiệu thời trang uy tín hàng đầu tại Việt Nam dành riêng cho phái mạnh.\n
+        \n
+        SỨ MỆNH\nKhông ngừng sáng tạo và tỉ mỉ từ công đoạn sản xuất đến các khâu dịch vụ, nhằm mang đến cho Quý Khách Hàng những trải nghiệm mua sắm đặc biệt nhất:
+        sản phẩm chất lượng - dịch vụ hoàn hảo - xu hướng thời trang mới mẻ và tinh tế. Thông qua các sản phẩm thời trang, TWestside luôn mong muốn truyền tải
+        đến bạn những thông điệp tốt đẹp cùng với nguồn cảm hứng trẻ trung và tích cực.\n
+        \n
+        TẦM NHÌN\nVới mục tiêu xây dựng và phát triển những giá trị bền vững, trong 10 năm tới, TWestside sẽ trở thành thương hiệu dẫn đầu
+        về thời trang phái mạnh trên thị trường Việt Nam.\n
+        \n
+        THÔNG ĐIỆP TWestside GỬI ĐẾN BẠN\n
+        \nTWestside muốn truyền cảm hứng tích cực đến các chàng trai: Việc mặc đẹp rất quan trọng,
+        nó thể hiện được cá tính, sự tự tin và cả một phần lối sống, cách suy nghĩ của bản thân. Mặc thanh lịch, sống thanh lịch.\n
+        \nChọn TWestside, bạn đang lựa chọn sự hoàn hảo cho điểm nhấn thời trang của chính mình! ]]>\n
+    </string>
+    <string name="title_activity_lienhe">Map</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+</resources>
