@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.cntt.doantotnghiep.R;
@@ -27,8 +28,8 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
 
     Toolbar toolbarchitiet;
     ImageView imgChitiet;
-    TextView txtTen, txtGia, txtMota;
-    Spinner spinner, spinnerSize;
+    TextView txtTen, txtGia, txtMota, txtSize;
+    Spinner spinner;
     Button btnMua;
 
     int id = 0;
@@ -38,6 +39,9 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
     String Motachitiet = "";
     int Idsanpham = 0;
 
+    int idha = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +50,6 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
         ActionTollbar();
         GetInfomation();
         CatchEventSpinner();
-        CatchEventSpinnerSize();
         EventButton();
     }
 
@@ -54,6 +57,8 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.iconmenu, menu);
+        MenuItem itemTimKiem= menu.findItem(R.id.timkiem);
+        itemTimKiem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -74,16 +79,14 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (MainActivity.manggiohang.size() > 0){
                     int sl= Integer.parseInt(spinner.getSelectedItem().toString());
-                    String size = spinnerSize.getSelectedItem().toString();
-
+                    String sizesp = "Free Size";
                     boolean exists = false;
 
                     // khi giỏ hàng đã có sản phẩm
                     for (int i = 0;i <MainActivity.manggiohang.size(); i++){
                         // thêm số lượng cộng dồn khi đã có sản phẩm trong giỏ hàng
-                        if (MainActivity.manggiohang.get(i).getIdsp() == id && MainActivity.manggiohang.get(i).getSizesp().equals(size)){
+                        if (MainActivity.manggiohang.get(i).getIdsp() == id){
                             MainActivity.manggiohang.get(i).setSoluongsp(MainActivity.manggiohang.get(i).getSoluongsp() + sl);
-
                             //tính tiền tạm thời
                             MainActivity.manggiohang.get(i).setGiasp(Giachitiet * MainActivity.manggiohang.get(i).getSoluongsp());
                             exists = true;
@@ -94,16 +97,15 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
                     if (exists == false){
                         //lấy dữ liệu trong spinner
                         int soluong = Integer.parseInt(spinner.getSelectedItem().toString());
-                        String sizesp = spinnerSize.getSelectedItem().toString();
 
                         long Giamoi = soluong * Giachitiet; // tính tiền
                         //thêm vào mảng giỏ hàng
                         MainActivity.manggiohang.add(new Giohang(id,Tenchitiet,Giamoi,sizesp,Hinhanhchitiet, soluong));
                     }
                 }else{
+                    String sizesp = "Free Size";
                     //lấy dữ liệu trong spinner
                     int soluong = Integer.parseInt(spinner.getSelectedItem().toString());
-                    String sizesp = spinnerSize.getSelectedItem().toString();
                     long Giamoi = soluong * Giachitiet; // tính tiền
                     //thêm vào mảng giỏ hàng
                     MainActivity.manggiohang.add(new Giohang(id,Tenchitiet,Giamoi,sizesp,Hinhanhchitiet, soluong));
@@ -120,12 +122,6 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
         ArrayAdapter<Integer> arrayadapter= new ArrayAdapter<Integer>(this, R.layout.support_simple_spinner_dropdown_item, soluong);
         spinner.setAdapter(arrayadapter);
     }
-    private void CatchEventSpinnerSize() {
-        String[] size= new String[]{"S","M","L","XL"};
-        ArrayAdapter<String> arrayadapterSize= new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, size);
-        spinnerSize.setAdapter(arrayadapterSize);
-    }
-
     private void GetInfomation() {
 
         //nhận dữ liệu từ ds gửi qua
@@ -154,7 +150,7 @@ public class ChiTietSanPhamActivity extends AppCompatActivity {
         txtGia = findViewById(R.id.textviewgiachitietsanpham);
         txtMota = findViewById(R.id.textviewmotachitietsanpham);
         spinner = findViewById(R.id.spinner);
-        spinnerSize = findViewById(R.id.spinnerSize);
+        txtSize = findViewById(R.id.tv_size);
         btnMua = findViewById(R.id.buttonThem);
     }
     private void ActionTollbar() {

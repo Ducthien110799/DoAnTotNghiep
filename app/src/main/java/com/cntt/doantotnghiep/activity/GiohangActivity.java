@@ -23,16 +23,19 @@ import com.cntt.doantotnghiep.ultil.CheckConnection;
 
 import java.text.DecimalFormat;
 
+import static com.cntt.doantotnghiep.activity.LoginActivity.khachHang;
+
 public class GiohangActivity extends AppCompatActivity {
 
     ListView lvgiohang;
     public  static TextView txtthongbao;
     static TextView txttongtien;
-    Button btnthanhtoan, btntieptucmua;
+    Button btnthanhtoan;
     Toolbar toolbargiohang;
     public  static GiohangAdapter giohangAdapter;
 
     long tongtien = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class GiohangActivity extends AppCompatActivity {
         setContentView(R.layout.activity_giohang);
         Anhxa();
         ActionTollbar();
+
         CheckData();
         EventUltil();
         CatchOnButton();
@@ -47,27 +51,28 @@ public class GiohangActivity extends AppCompatActivity {
 //        intent.putExtra("tongtien", tongtien);
     }
 
-    private void CatchOnButton() {
-        btntieptucmua.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
+    public void CatchOnButton() {
         btnthanhtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MainActivity.manggiohang.size() > 0){
-                    Intent intent= new Intent(getApplicationContext(), ThongtinkhActivity.class);
+                try {
+                    if ((MainActivity.manggiohang.size() > 0) && !(khachHang.getIdkh().toString().equals(null))){
+                        Intent intent= new Intent(getApplicationContext(), ThongtinkhActivity.class);
+                        startActivity(intent);
+                    }else {
+                        CheckConnection.ShowToast_Short(getApplicationContext(), "Không có sản phẩm nào để thanh toán !");
+                    }
+                }catch (Exception e){
+                    CheckConnection.ShowToast_Short(getApplicationContext(), "Vui lòng đăng nhập để thanh toán !");
+                    Intent intent= new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
-                }else {
-                    CheckConnection.ShowToast_Short(getApplicationContext(), "Không có sản phẩm nào để thanh toán !");
                 }
+
             }
         });
     }
+
+
 
     public static void EventUltil() {
         long tongtien = 0;
@@ -83,20 +88,14 @@ public class GiohangActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.iconmenu, menu);
+        MenuItem itemGioHang = menu.findItem(R.id.menugiohang);
+        MenuItem itemTimKiem= menu.findItem(R.id.timkiem);
+        itemGioHang.setVisible(false);
+        itemTimKiem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // click on Giỏ hàng trên toolbar
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menugiohang:
-                Intent intent = new Intent(getApplicationContext(), GiohangActivity.class);
-                startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    // click on Giỏ hàng trên toolba
     private void CheckData() {
         if (MainActivity.manggiohang.size() <=0 ){
             giohangAdapter.notifyDataSetChanged();
@@ -125,7 +124,6 @@ public class GiohangActivity extends AppCompatActivity {
         txtthongbao= findViewById(R.id.textviewthongbao);
         txttongtien = findViewById(R.id.textviewtongtien);
         btnthanhtoan= findViewById(R.id.buttonthanhtoan);
-        btntieptucmua = findViewById(R.id.buttontieptucmuahang);
         toolbargiohang= findViewById(R.id.toolbargiohang);
 
         giohangAdapter = new GiohangAdapter(GiohangActivity.this, MainActivity.manggiohang);

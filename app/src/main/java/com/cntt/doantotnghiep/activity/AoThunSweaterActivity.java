@@ -85,6 +85,11 @@ public class AoThunSweaterActivity extends AppCompatActivity {
             case R.id.menugiohang:
                 Intent intent = new Intent(getApplicationContext(), GiohangActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.timkiem:
+                Intent intentSearch = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intentSearch);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -141,7 +146,7 @@ public class AoThunSweaterActivity extends AppCompatActivity {
                         JSONArray jsonArray= new JSONArray(response);
                         for (int i = 0; i<response.length(); i++){
                             JSONObject jsonObject= jsonArray.getJSONObject(i);
-                            id= jsonObject.getInt("id");
+                            id= jsonObject.getInt("idsp");
                             Tendt= jsonObject.getString("tensp");
                             Giadt= jsonObject.getInt("giasp");
                             Hinhanhdt= jsonObject.getString("hinhanhsp");
@@ -172,7 +177,7 @@ public class AoThunSweaterActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> param = new HashMap<String, String>();
-                param.put("idsanpham",String.valueOf(iddt));// đẩy dữ liệu lên server
+                param.put("idloaisanpham",String.valueOf(iddt));// đẩy dữ liệu lên server
                 return param;
             }
         };

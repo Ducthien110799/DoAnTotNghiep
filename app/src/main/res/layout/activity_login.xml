@@ -5,14 +5,6 @@
     android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:id="@+id/notify"
-        android:textColor="@color/black"
-        android:layout_margin="10dp"
-        android:text=" Vui lòng đăng nhập trước khi thanh toán..."/>
     <ImageView
         android:layout_margin="20dp"
         android:src="@drawable/logo"
@@ -53,7 +45,7 @@
                 android:id="@+id/emailLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="textEmailAddress"
                 android:textSize="20dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mật khẩu"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,6 +69,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/btnlogin"
             android:text="LOGIN"
+            android:id="@+id/btnLogin"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -92,8 +85,9 @@
     </LinearLayout>
     <TextView
         android:textSize="20sp"
+        android:id="@+id/tvDangKi"
         android:textStyle="bold"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:text="Bạn chưa có tài khoản ! Đăng kí"
         android:layout_width="match_parent"
         android:textAlignment="center"

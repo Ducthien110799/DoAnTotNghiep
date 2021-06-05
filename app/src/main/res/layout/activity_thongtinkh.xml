@@ -49,24 +49,7 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:layout_marginTop="10dp"
-                    android:text="Tỉnh "
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"/>
-                <Spinner
-                    android:id="@+id/spinnerTinh"
-                    android:layout_margin="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="200dp"
-                    android:layout_height="25dp"/>
-            </LinearLayout>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -176,14 +159,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="25dp"/>
             </LinearLayout>
-            <Button
-                android:id="@+id/buttonxacnhan"
-                android:textColor="@color/white"
-                android:background="#FF5722"
-                android:layout_margin="10dp"
-                android:text="Xác nhận thanh toán"
+            <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"/>
+                android:layout_height="match_parent">
+                <Button
+                    android:layout_marginTop="50dp"
+                    android:id="@+id/buttonxacnhan"
+                    android:textColor="@color/white"
+                    android:background="#FF5722"
+                    android:layout_margin="10dp"
+                    android:text="Xác nhận thanh toán"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

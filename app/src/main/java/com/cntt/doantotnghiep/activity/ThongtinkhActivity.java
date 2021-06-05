@@ -1,16 +1,22 @@
 package com.cntt.doantotnghiep.activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,15 +33,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
+
+import static com.cntt.doantotnghiep.activity.LoginActivity.khachHang;
 
 public class ThongtinkhActivity extends AppCompatActivity {
 
     Toolbar toolbarthogntinkh;
     EditText edttenkhachhang, edtemail, edtsdt, edtdiachi;
     Button btnxacnhan;
-    Spinner spinnerTinh, spinnerphivanchuyen, spinnerthanhtoan;
+    Spinner spinnerphivanchuyen, spinnerthanhtoan;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +57,38 @@ public class ThongtinkhActivity extends AppCompatActivity {
         setContentView(R.layout.activity_thongtinkh);
         Anhxa();
         ActionTollbar();
-        CatchSpinnerTinh();
+//        loadthongtinKH();
+        ReadDataThongtinkhachhang();
         CatchSpinerPhiVanChuyen();
         CatSpinnerThanhtoan();
         if (CheckConnection.isNetworkAvailable(getApplicationContext())){
             CatchButtonXacNhan();
+
         }else {
             CheckConnection.ShowToast_Short(getApplicationContext(),"Kiểm tra lại kết nối !");
         }
+    }
+
+    private void ReadDataThongtinkhachhang() {
+        edttenkhachhang.setText(khachHang.getTenkh().toString());
+        edtdiachi.setText(khachHang.getDiachikh().toString());
+        edtsdt.setText(khachHang.getSodienthoaikh().toString());
+        edtemail.setText(khachHang.getEmailkh().toString());
+    }
+
+    public void doSaveThongtinKH(View view)  {
+        // The created file can only be accessed by the calling application
+        // (or all applications sharing the same user ID).
+        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("ten", edttenkhachhang.getText().toString().trim());
+        editor.putString("diachi", edtdiachi.getText().toString().trim());
+        editor.putString("sodienthoai", edtsdt.getText().toString().trim());
+        editor.putString("email", edtemail.getText().toString().trim());
+
+        // Save.
+        editor.apply();
     }
 
     private void CatSpinnerThanhtoan() {
@@ -65,29 +103,28 @@ public class ThongtinkhActivity extends AppCompatActivity {
         spinnerphivanchuyen.setAdapter(arrayadapterSize);
     }
 
-    private void CatchSpinnerTinh() {
-            String[] size= new String[]{"An Giang","Bà Rịa - Vũng Tàu","Bắc Giang","Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận",
-                    "Cà Mau","Cao Bằng","Đắk Lắk","Đắk Nông","Điện Biên","Đồng Nai","Đồng Tháp","Gia Lai","Hà Giang","Hà Nam","Hà Tĩnh","Hải Dương","Hậu Giang",
-                    "Hòa Bình","Hưng Yên","Khánh Hòa","Kiên Giang","Kon Tum","Lai Châu","Lâm Đồng","Lạng Sơn","Lào Cai","Long An","Nam Định","Nghệ An","Ninh Bình",
-                    "Ninh Thuận","Phú Thọ","Quảng Bình","Quảng Nam","Quảng Ngãi","Quảng Ninh","Quảng Trị","Sóc Trăng","Sơn La","Tây Ninh","Thái Bình","Thái Nguyên",
-                    "Thanh Hóa","Thừa Thiên Huế","Tiền Giang","Trà Vinh","Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái","Phú Yên","Cần Thơ","Đà Nẵng","Hải Phòng",
-                    "Hà Nội","TP HCM"};
-            ArrayAdapter<String> arrayadapterSize= new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, size);
-            spinnerTinh.setAdapter(arrayadapterSize);
-    }
+
 
     private void CatchButtonXacNhan() {
         btnxacnhan.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                String tinh= spinnerTinh.getSelectedItem().toString();
-                String nha = edtdiachi.getText().toString();
-                String diachi = nha +","+tinh;
+                doSaveThongtinKH(v);
+
+                String diachi = edtdiachi.getText().toString().trim();
                 String ten = edttenkhachhang.getText().toString().trim();
                 String sdt = edtsdt.getText().toString().trim();
                 String email = edtemail.getText().toString().trim();
                 String phivanchuyen = spinnerphivanchuyen.getSelectedItem().toString();
                 String thanhtoan = spinnerthanhtoan.getSelectedItem().toString();
+                LocalDateTime ngaydathang = LocalDateTime.now();
+
+
+                Random r = new Random();
+                int id = r.nextInt(100);
+
+                final int iddh = id;
 
                 Intent intent= new Intent(getApplicationContext(), ThanksActivity.class);
 
@@ -95,15 +132,15 @@ public class ThongtinkhActivity extends AppCompatActivity {
                     RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest= new StringRequest(Request.Method.POST, Server.Duongdandonhang, new Response.Listener<String>() {
                         @Override
-                        public void onResponse(final String madonhang) {
-
+                        public void onResponse( String madonhang) {
                             if (Integer.parseInt(madonhang) > 0){
                                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                                 StringRequest request= new StringRequest(Request.Method.POST, Server.Duongdanchitietdonhang, new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
-                                        intent.putExtra("madonhang", madonhang);
-                                        intent.putExtra("tenkhachhang", ten);
+                                        intent.putExtra("madonhang", String.valueOf(iddh));
+                                        intent.putExtra("tenkhach", ten);
+                                        intent.putExtra("ship", phivanchuyen);
                                         startActivity(intent);
                                     }
                                 }, new Response.ErrorListener() {
@@ -118,12 +155,11 @@ public class ThongtinkhActivity extends AppCompatActivity {
                                         for (int i =0; i<MainActivity.manggiohang.size(); i++){
                                             JSONObject jsonObject= new JSONObject();
                                             try {
-                                                jsonObject.put("madonhang", madonhang);
-                                                jsonObject.put("masanpham", MainActivity.manggiohang.get(i).getIdsp());
-                                                jsonObject.put("tensanpham", MainActivity.manggiohang.get(i).getTensp());
-                                                jsonObject.put("giasanpham", MainActivity.manggiohang.get(i).getGiasp());
-                                                jsonObject.put("sizesanpham", MainActivity.manggiohang.get(i).getSizesp());
-                                                jsonObject.put("soluongsanpham", MainActivity.manggiohang.get(i).getSoluongsp());
+                                                jsonObject.put("iddh", iddh);
+                                                jsonObject.put("idsp",  MainActivity.manggiohang.get(i).getIdsp());
+                                                jsonObject.put("soluongctdh", MainActivity.manggiohang.get(i).getSoluongsp());
+                                                jsonObject.put("giactdh", MainActivity.manggiohang.get(i).getGiasp());
+
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
@@ -148,23 +184,26 @@ public class ThongtinkhActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             HashMap<String, String > hashMap= new HashMap<String, String>();
-                            hashMap.put("tenkhachhang", ten);
-                            hashMap.put("diachi", diachi);
-                            hashMap.put("sodienthoai", sdt);
-                            hashMap.put("email", email);
+                            hashMap.put("iddh", String.valueOf(iddh));
+                            hashMap.put("idkh", khachHang.getIdkh().toString().trim());
+                            hashMap.put("hinhthucthanhtoan", thanhtoan);
+                            hashMap.put("diachigiaohang", diachi);
                             hashMap.put("phivanchuyen", phivanchuyen);
-                            hashMap.put("phuongthucthanhtoan", thanhtoan);
+                            hashMap.put("ngaydathang", DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH).format(ngaydathang));
                             return hashMap;
                         }
                     };
                     requestQueue.add(stringRequest);
 
+
                 }else {
                     CheckConnection.ShowToast_Short(getApplicationContext(), "Vui lòng nhận đủ dữ liệu");
+
                 }
-            }
+            };
+
         });
-    }
+    };
 
     private void Anhxa() {
         toolbarthogntinkh = findViewById(R.id.toolbarthongtinkh);
@@ -173,7 +212,6 @@ public class ThongtinkhActivity extends AppCompatActivity {
         edtdiachi = findViewById(R.id.edittextdiachi);
         edtemail = findViewById(R.id.edittextemail);
         btnxacnhan = findViewById(R.id.buttonxacnhan);
-        spinnerTinh = findViewById(R.id.spinnerTinh);
         spinnerphivanchuyen= findViewById(R.id.spinnerphivanchuyen);
         spinnerthanhtoan = findViewById(R.id.spinnerthanhtooan);
     }

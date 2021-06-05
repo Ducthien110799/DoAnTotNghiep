@@ -121,14 +121,6 @@ public class SearchActivity extends AppCompatActivity {
         searchAdapter= new SearchAdapter(getApplicationContext(), mangsanpham);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
         recyclerView.setAdapter(searchAdapter);
-
-
-//        recyclerView.setAdapter(searchAdapter);
-//
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-//        recyclerView.setAdapter(searchAdapter);
-
     }
 
     private void ActionTollbar() {

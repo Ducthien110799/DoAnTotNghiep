@@ -7,7 +7,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,10 +45,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.cntt.doantotnghiep.activity.LoginActivity.khachHang;
+
 public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     ViewFlipper viewFlipper;
+    ImageView account;
     RecyclerView recyclerViewmanhinhchinh;
     NavigationView navigationView;
     ListView listViewmanhinhchinh;
@@ -56,11 +61,10 @@ public class MainActivity extends AppCompatActivity {
     int id= 0;
     String tenloaisp= "";
     String hinhanhloaisp="";
-
     ArrayList<Sanpham> mangsanpham;
     SanphamAdapter sanphamAdapter;
-
     public static ArrayList<Giohang> manggiohang; //Mảng toàn cục để lưu giỏ hàng
+    LoginActivity loginActivity= new LoginActivity();
 
 
     @Override
@@ -70,16 +74,38 @@ public class MainActivity extends AppCompatActivity {
         Anhxa();
         if (CheckConnection.isNetworkAvailable(getApplicationContext())){
             ActionBar();
+            CatchAccount();
             ActionViewFLiper();
             GetDuLieuLoaisp();
             GetDuLieuSPMoinhat();
             CatchOnItemListView();
+
         }else{
             CheckConnection.ShowToast_Short(getApplicationContext(),"Kiểm tra lại kể nối !");
             finish();
         }
-
     }
+
+    private void CatchAccount() {
+        account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= getIntent();
+                int isLoginedTaiKhoan= intent.getIntExtra("islogin",0);
+                int isLogined= intent.getIntExtra("abc",0);
+
+                if(isLoginedTaiKhoan == 1){
+                    Intent intent1= new Intent(MainActivity.this, TaikhoanActivity.class);
+                    startActivity(intent1);
+                }
+                else if (isLogined==0){
+                    Intent intent2= new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent2);
+                }
+            }
+        });
+    }
+
     // Hiện giỏ hàng trên toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menugiohang:
                 Intent intent = new Intent(getApplicationContext(), GiohangActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.timkiem:
+                Intent intentSearch = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intentSearch);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -108,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         //kiểm tra internet để load lại dữ liệu
                         if (CheckConnection.isNetworkAvailable(getApplicationContext())){
-                            Intent intent= new Intent(MainActivity.this, MainActivity.class);
-                            startActivity(intent);
+
+
                         }else{
                             CheckConnection.ShowToast_Short(getApplicationContext(), "Bạn hãy kiểm tra lại kết nối !");
                         }
@@ -196,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                             Giasanpham= jsonObject.getInt("giasp");
                             Hinhanhsanpham= jsonObject.getString("hinhanhsp");
                             Motasanpham= jsonObject.getString("motasp");
-                            IDsanpham= jsonObject.getInt("idloaisanpham");
+                            IDsanpham= jsonObject.getInt("idloaisp");
 
                             //thêm dữ liệu vào mảng vừa đọc
                             mangsanpham.add(new Sanpham(ID, Tensanpham, Giasanpham,null, Hinhanhsanpham, Motasanpham,0,IDsanpham));
@@ -234,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                     for (int i=0; i<response.length(); i++){
                         try {
                             JSONObject jsonObject= response.getJSONObject(i);
-                            id= jsonObject.getInt("idloai");
+                            id= jsonObject.getInt("idloaisp");
                             tenloaisp= jsonObject.getString("tenloaisp");
                             hinhanhloaisp= jsonObject.getString("hinhanhloaisp");
 
@@ -252,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
                     mangloaisp.add(4, new Loaisp(0, "Thông tin","https://img.icons8.com/bubbles/50/000000/info.png"));
                     //add item giới thiệu
                     mangloaisp.add(5, new Loaisp(0,"Liên hệ","https://img.icons8.com/fluent/48/000000/add-contact-to-company.png"));
+
                 }
             }
         }, new Response.ErrorListener() {
@@ -269,10 +301,10 @@ public class MainActivity extends AppCompatActivity {
         //thêm mảng hình ảnh
         ArrayList<String> mangquangcao= new ArrayList<>();
         mangquangcao.add("https://storage.googleapis.com/cdn.nhanh.vn/store/7136/bn/sb_1612426893_288.jpg");
-        mangquangcao.add("https://bizweb.dktcdn.net/100/201/931/collections/banner-ao-thun-min.png?v=1492588306510");
-        mangquangcao.add("https://inanaz.com.vn/wp-content/uploads/2020/02/mau-banner-quang-cao-dep-15.jpg");
-        mangquangcao.add("https://dep.com.vn/wp-content/uploads/2020/09/adidas-training-city-tee-ho-chi-minh-city-deponline-07-20200915.jpg");
-        mangquangcao.add("https://i1.wp.com/maymachungthinh.net/wp-content/uploads/2020/11/banner4-may-dong-phuc-hung-thinh.gif?resize=900%2C400");
+        mangquangcao.add("https://4men.com.vn/images/thumbs/2020/06/aquaholic-summer-collection-news-571.png");
+        mangquangcao.add("https://4men.com.vn/images/2020/05/20200503_156fab7a34dbc0d65c4dd02236406b95_1588495479.png");
+        mangquangcao.add("https://4men.com.vn/images/2020/07/20200714_252bfdce9b068bff9d6c82358efdb1e4_1594716191.png");
+        mangquangcao.add("https://4men.com.vn/images/thumbs/2020/12/-news-596.jpg");
 
         //gán hình ảnh vào imageview
         for (int i=0; i<mangquangcao.size(); i++){
@@ -290,13 +322,12 @@ public class MainActivity extends AppCompatActivity {
         //thực thi cho chạy slide
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
-
     }
 
     private void ActionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationIcon(R.drawable.rounded);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void Anhxa() {
         toolbar= findViewById(R.id.toolbarmanhinhchinh);
         viewFlipper = findViewById(R.id.viewlipper);
@@ -312,11 +344,12 @@ public class MainActivity extends AppCompatActivity {
         navigationView= findViewById(R.id.navigationview);
         listViewmanhinhchinh= findViewById(R.id.listviewmanhinhchinh);
         drawerLayout = findViewById(R.id.drawerlayout);
+        account = findViewById(R.id.account);
         mangloaisp= new ArrayList<>();
         mangsanpham= new ArrayList<>();
 
         //add dòng trang chủ
-        mangloaisp.add(0, new Loaisp(0,"Home", "https://img.icons8.com/bubbles/100/000000/home.png"));
+        mangloaisp.add(0, new Loaisp(0,"Trang chủ", "https://img.icons8.com/bubbles/100/000000/home.png"));
 
         loaispAdapter= new LoaispAdapter(mangloaisp, getApplicationContext());
         listViewmanhinhchinh.setAdapter(loaispAdapter);

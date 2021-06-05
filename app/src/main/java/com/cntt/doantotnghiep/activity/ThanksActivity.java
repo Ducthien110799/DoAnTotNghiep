@@ -13,7 +13,7 @@ import com.cntt.doantotnghiep.R;
 import java.text.DecimalFormat;
 
 public class ThanksActivity extends AppCompatActivity {
-    TextView txtmadonhang, txttongtienthanhcong, txttenkhachhang;
+    TextView txtmadonhang, txttongtienthanhcong, txttenkhachhang, txtShip;
     Button btnTieptucmuasamthanhcong;
 
     @Override
@@ -24,17 +24,17 @@ public class ThanksActivity extends AppCompatActivity {
         GetThongTinDonHang();
         ButtonTiepTuc();
 
-
-
     }
-
     private void ButtonTiepTuc() {
         btnTieptucmuasamthanhcong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity.manggiohang.clear();
+                int islogin=1;
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("islogin", islogin);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -44,8 +44,11 @@ public class ThanksActivity extends AppCompatActivity {
         String madonhang= intent.getStringExtra("madonhang");
         txtmadonhang.setText("DH"+madonhang);
 
-        String tenkh= intent.getStringExtra("tenkhachhang");
+        String tenkh= intent.getStringExtra("tenkhach");
         txttenkhachhang.setText(tenkh);
+
+        String phiship = intent.getStringExtra("ship");
+        txtShip.setText("+Phí ship: " + phiship);
 
         long tongtien = 0;
         for (int i = 0; i < MainActivity.manggiohang.size();i++){
@@ -61,5 +64,6 @@ public class ThanksActivity extends AppCompatActivity {
         txttenkhachhang = findViewById(R.id.textviewtenkhachhang);
         txttongtienthanhcong = findViewById(R.id.textviewtongtienthanhcong);
         btnTieptucmuasamthanhcong = findViewById(R.id.buttontieptucmuahangthanhcong);
+        txtShip = findViewById(R.id.tvShip);
     }
 }
