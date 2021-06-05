@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.SearchActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarTim"
+        android:layout_width="match_parent"
+        app:title="Tìm sản phẩm ..."
+        android:layout_height="?attr/actionBarSize">
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/rcv_search"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="128dp"
+        tools:layout_editor_absoluteY="177dp" />
+</LinearLayout>
